@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.cnt {
+			width: 320px;
+			min-height: 300px;
+			background-color: lightgrey;
+			margin: auto;
+		}
+
+		ul {
+			list-style: none;
+			padding: 0;
+		}
+
+		li {
+			height: 40px;
+			line-height: 40px;
+			border-bottom: 1px solid grey;
+			position: relative;
+		}
+
+		li button {
+			position: absolute;
+			right: 5px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.divs div {
+			width: 320px;
+			height: 300px;
+			margin: auto;
+			display: none;
+		}
+
+		#green {
+			background-color: green;
+		}
+
+		#orange {
+			background-color: orange;
+		}
+
+		#teal {
+			background-color: teal;
+		}
+
+		.show {
+			display: block !important;
+		}
+
+
+	</style>
+</head>
+<body>
+
+<nav>
+	
+</nav>
+
+<!-- <button id="btn" onclick="testEvent()">Click me</button> --> <!-- 1st way of event binding -->
+
+<ul id="testlist">
+	<li>One</li>
+	<li>Two</li>
+	<li>Three</li>
+	<li>Four</li>
+</ul>
+
+<div class="cnt">
+	<form>
+		<input type="text">
+		<button id="btn">Click me</button>
+	</form>
+	<ul>
+		
+	</ul>
+	<select>
+		<option value="green">Green</option>
+		<option value="orange">Orange</option>
+		<option value="teal">Teal</option>
+	</select>
+</div>
+
+<div class="divs">
+	<div id="green"></div>
+	<div id="orange"></div>
+	<div id="teal">
+		<a href="#">Some JS Func</a>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+var btn = document.getElementById("btn");
+var input = document.querySelector('.cnt input[type="text"]');
+var list = document.querySelector('.cnt ul');
+var myForm = document.querySelector("form");
+var tealLink = document.querySelector("#teal a");
+
+tealLink.onclick = function(e){
+	e.preventDefault(); /// Cancel default action
+}
+
+
+//// Event object
+
+// lis[0].onclick = function(eventObject){
+// 	console.log(eventObject.target);
+// }
+
+var lis = document.querySelectorAll("#testlist li");
+
+for(var i = 0; i < lis.length; i++) {
+	lis[i].onclick = function(e){
+		console.log(e.target.textContent);
+	}
+}
+
+///////////
+
+
+
+function getText(e) {
+	e.preventDefault();
+	var text = input.value;
+	console.log(text);
+
+	if(text) {
+		var newLi = document.createElement("li");
+		newLi.textContent = text;
+
+		var delBtn = document.createElement("button");
+		delBtn.textContent = "X";
+
+		delBtn.onclick = function() {
+			newLi.remove();
+		}
+
+
+		newLi.appendChild(delBtn);
+
+		list.appendChild(newLi);
+		input.value = "";
+	}
+	
+}
+
+function trackInput(e) {
+	console.log(e.keyCode);
+	console.log(e.target.value);
+	if(e.keyCode == 13) {
+		getText();
+	}
+}
+
+//btn.onclick = getText;
+
+
+myForm.onsubmit = getText;
+
+//input.onkeypress = trackInput;
+/// keypress returns only alpha-numeric keyCodes
+/// keydown return all keyCodes
+/// input returns NO keyCodes
+
+function getSelect(e) {
+	console.log(e.target.value);
+	var divs = document.querySelectorAll(".divs div");
+	for(var i = 0; i < divs.length; i++) {
+		divs[i].removeAttribute("class");
+	}
+	document.getElementById(e.target.value).setAttribute("class", "show");
+}
+
+document.querySelector("select").onchange = getSelect;
+
+
+
+</script>
+
+
+
+</body>
+
+
+</html>
